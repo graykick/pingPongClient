@@ -1,32 +1,87 @@
-(function() {
+const connection = require('./network.js');
+const $ = require("jquery");
+const readyRoom = require('./readyRoom.js');
+
+let id;
+
+const init = (userId) => {
+    console.log("create room1");
+
+    id = userId;
+
     $("#createRoom-btn").on("click", function() {
         let jsonSendData = {
             type: "createRoom",
             id: id,
             title: $("#room-title").val()
         }
-        connection.connection.write(JSON.stringify(jsonSendData) + '\r\n');
+        connection.sendJson(jsonSendData);
     });
 
-    $(".roomList-table tr").on("dblclick", "tr", function() {
+    $(".roomList-table").on("dblclick", "tr", function() {
+        console.log("2 click");
+        console.log($(this));
+        console.log($(this).children("td").eq(0).text());
+        readyRoom.init(id, Number($(this).children("td").eq(0).text()));
+
         let jsonSendData = {
             type: "enterRoom",
-            no: $(this).children("td").eq(0).val()
+            "room_id": Number($(this).children("td").eq(0).text()),
+            id: id
         }
-        connection.connection.write(JSON.stringify(jsonSendData) + '\r\n');
+        connection.sendJson(jsonSendData);
     });
-})();
+}
 
-function roomListLoad() {
+const getRoomList = () => {
     let jsonSendData = {
         type: "getRoomList"
     }
-    connection.connection.write(JSON.stringify(jsonSendData) + '\r\n');
+    connection.sendJson(jsonSendData);
 }
 
-function fillRooms(data) {
+const fillRooms = (data) => {
+    console.log(data[0]);
     for (let i = 0; i < data.length; i++) {
-        let newTr = `<tr><td>${data[i][room_id]}</td><td>${data[i].title}</td><td>${data[i].userList}</td></tr>`;
+        let newTr = `<tr><td>${data[i]['room_id']}</td><td>${data[i].title}</td><td>${data[i].userList}</td></tr>`;
         $(".roomList-table").append(newTr);
     }
 }
+
+const enterRoom = (no) => {
+    let jsonSendData = {
+        type: "enterRoom",
+        id: id,
+        "room_id": no
+    }
+    connection.sendJson(jsonSendData);
+}
+
+const callbacks = {
+    enterRoom: (res) => {
+        $(".room-container").toggle("slide");
+        $(".readyRoom-container").toggle("slide");
+
+        if (res.status == "200" || res.status == "201") {
+            // readyRoom.getRoomInfo(res["room_id"]);
+            readyRoom.fillUserCard();
+        }
+    },
+    createRoom: (res) => {
+        if (res.status == "200") {
+            enterRoom(res.no);
+        }
+    },
+    getRoomList: (res) => {
+        if (res.status == "200") {
+            fillRooms(res.roomList);
+        }
+    }
+}
+
+connection.addCallbacks(callbacks);
+
+module.exports.init = init;
+module.exports.getRoomList = getRoomList;
+module.exports.fillRooms = fillRooms;
+module.exports.enterRoom = enterRoom;

@@ -300,3 +300,42 @@ html, body {
     border-radius: 40px;
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+.fight-div:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(10px);
+    transition: all 0.3s ease-in;
+}
+
+.fight-div.selected {
+    transform: translateY(-50px);
+    transition: all 0.3s ease-in;
+}
+
+.count, .second-count{
+  color: red;
+  position: absolute;
+  font-size: 60px;
+  font-weight: bold;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.count.enlarge {
+  animation: enlarge 1s forwards;
+}
+
+.second-count.enlarge {
+  animation: second-enlarge 1.5s forwards;
+}
+
+@keyframes enlarge {
+  0%   { font-size: 60px; opacity:1; }
+    100% { font-size: 120px; opacity:0; }
+}
+
+@keyframes second-enlarge {
+  0%   { font-size: 60px; opacity:1; }
+    100% { font-size: 240px; opacity:0; }
+}

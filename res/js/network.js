@@ -23,6 +23,11 @@ class Network {
     addCallbacks(newCallbacks) {
         Object.assign(this.callbacks, newCallbacks);
     }
+
+    sendJson(json) {
+        this.connection.write(JSON.stringify(json) + '\r\n');
+    }
 }
 
-module.exports = new Network();
+const connection = new Network();
+module.exports = connection;

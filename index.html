@@ -62,11 +62,15 @@
 
     <div class="readyRoom-container main-container">
         <div class="ready-box">
+            <div class="count-container">
+                <div class="count">10</div>
+                <div class="second-count">10</div>
+            </div>
             <div class="user-box">
                 <table class="user-table">
                     <tr>
                         <td>
-                            <div class="user-div">
+                            <div class="user-div my-user-info">
                                 <h2 class="user-name">MOMO</h2>
                                 <div class="fight-box">
                                     <div class="fight-div scissor">
@@ -83,7 +87,7 @@
                         </td>
                         <td>
                             <div class="user-div">
-                                <h2 class="user-name">MOMO</h2>
+                                <h2 class="user-name enemy-user-info">MOMO</h2>
                                 <div class="fight-box">
                                     <div class="fight-div scissor">
                                         가위!
@@ -107,8 +111,11 @@
                 <label for="chat">username : <input type="text" name="chat" value=""></label>
             </div>
         </div>
-
     </div>
+    <div class="game-container main-container">
+      <canvas id="canvas" width="300" height="300"></canvas>
+    </div>
+
 </body>
 <script>
     // You can also require other files to run in this process

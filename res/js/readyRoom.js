@@ -1,5 +1,6 @@
 const connection = require('./network.js');
 const $ = require("jquery");
+const inGame = require("./inGame.js");
 
 let id;
 let selectedRPS;
@@ -27,7 +28,7 @@ const init = (userId, roomNum) => {
             RPSstate = 5;
         }
     });
-}
+};
 
 const getRoomInfo = (roomId) => {
     console.log("getRoomInfo")
@@ -36,37 +37,43 @@ const getRoomInfo = (roomId) => {
         "room_id": roomId
     }
     connection.sendJson(jsonSendData);
-}
+};
 
 const fillUserCard = () => {
     $(".user-name").eq(0).text(id);
     $(".user-div").eq(1).hide();
-}
+};
+
+const fillUser = (names) => {
+    for(let i = 0; i < names.length; i++) {
+        $(`.user-name:nth-child(${i})`).text(names[i]);
+    }
+};
 
 const fillEnemyCard = (data) => {
     console.log("enemy card");
     $(".user-div").eq(1).show();
     $(".user-name").eq(1).text(data);
-}
+};
 
 const sendRPS = () => {
-    console.log("sendRPS");
     let sendJson = {
         type: "startRPS",
         "room_id": roomId,
         id: id,
         RPS: RPSstate
     };
+    console.log(sendJson);
     connection.sendJson(sendJson);
-}
+};
 
 const renderWinner = (data) => {
-    if(data) {
+    if (data) {
         $(".my-user-info").after('<h1>선공</h1>');
     } else {
         $(".enemy-user-info").after('<h1>선공</h1>');
     }
-}
+};
 
 const startCountDown = (data) => {
     setTimeout(sendRPS, 10000);
@@ -90,18 +97,16 @@ const startCountDown = (data) => {
                 }
             }, 1700);
         } else {
-            clearInterval(intervalID)
+            clearInterval(intervalID);
         }
-    }
-    intervalId = setInterval(countDown, 1000)
-}
+    };
+
+    intervalId = setInterval(countDown, 1000);
+};
 
 const callbacks = {
     getRoomInfo: (res) => {
 
-    },
-    test: (res) => {
-        console.log(res);
     },
     startGame: (res) => {
         if (res.status == "200") {
@@ -110,20 +115,23 @@ const callbacks = {
         }
     },
     setWinner: (res) => {
-        if(res.status == "200") {
+        if (res.status == "200") {
 
         }
     },
     enterGame: (res) => {
-        if(res.status == "200") {
+        if (res.status == "200") {
             $(".readyRoom-container").toggle("slide");
             $(".game-container").toggle("slide");
+            inGame.setInfo(roomId, id);
         }
     }
-}
+
+};
 
 connection.addCallbacks(callbacks);
 
 module.exports.init = init;
 module.exports.getRoomInfo = getRoomInfo;
 module.exports.fillUserCard = fillUserCard;
+module.exports.fillUser = fillUser;

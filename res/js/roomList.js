@@ -3,6 +3,7 @@ const $ = require("jquery");
 const readyRoom = require('./readyRoom.js');
 
 let id;
+let roomId;
 
 const init = (userId) => {
     console.log("create room1");
@@ -22,7 +23,7 @@ const init = (userId) => {
         console.log("2 click");
         console.log($(this));
         console.log($(this).children("td").eq(0).text());
-        readyRoom.init(id, Number($(this).children("td").eq(0).text()));
+        roomId = Number($(this).children("td").eq(0).text());
 
         let jsonSendData = {
             type: "enterRoom",
@@ -49,6 +50,7 @@ const fillRooms = (data) => {
 }
 
 const enterRoom = (no) => {
+    readyRoom.init(id, no);
     let jsonSendData = {
         type: "enterRoom",
         id: id,
@@ -64,7 +66,7 @@ const callbacks = {
 
         if (res.status == "200" || res.status == "201") {
             // readyRoom.getRoomInfo(res["room_id"]);
-            readyRoom.fillUserCard();
+            readyRoom.fillUser(res.userList);
         }
     },
     createRoom: (res) => {

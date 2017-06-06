@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ping pong</title>
+    <link rel="stylesheet" href="./res/css/index.css">
+</head>
+
+<body>
+    <div class="login-container main-container">
+        <div id="loading-wrapper">
+            <div id="loading-text">
+                <div class="login-form">
+                    <h1>Login</h1>
+                    <input type="text" name="id" id="login-id" value="" placeholder="id">
+                    <input type="password" name="password" id="login-password" value="" placeholder="password">
+                    <button type="button" name="button" id="login-btn">Login</button>
+                    <br>
+                    <a href="javascript:void(0)">회원가입</a>
+                </div>
+                <div class="register-form">
+                    <h1>Register</h1>
+                    <input type="text" name="id" id="register-id" value="" placeholder="id">
+                    <input type="text" name="userName" id="register-username" value="" placeholder="user name">
+                    <input type="password" name="password" id="register-password" value="" placeholder="password">
+                    <button type="button" name="button" id="register-btn">Register</button>
+                    <br>
+                    <a href="javascript:void(0)">back to Login</a>
+                </div>
+            </div>
+            <div id="loading-content"></div>
+        </div>
+    </div>
+
+
+    <div class="room-container main-container">
+        <div class="roomList-container">
+            <div class="roomList-table-div">
+                <table class="roomList-table">
+                    <tr>
+                        <th>방 번호</th>
+                        <th>방 제목</th>
+                        <th>개설자</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="room-form">
+                <input type="text" name="" value="" placeholder="room name" id="room-title">
+                <button type="button" name="button" id="createRoom-btn">방 생성</button>
+                <button type="button" name="button">빠른 시작</button>
+                <button type="button" name="button">연습 게임</button>
+            </div>
+            <div class="chat-div">
+
+            </div>
+            <div class="chat-input-div">
+                <label for="chat">username : <input type="text" name="chat" value=""></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="readyRoom-container main-container">
+        <div class="ready-box">
+            <div class="count-container">
+                <div class="count">10</div>
+                <div class="second-count">10</div>
+            </div>
+            <div class="user-box">
+                <table>
+                    <tr>
+                        <td><h1 class="user-name"></h1></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="user-name"></h1></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="user-name"></h1></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="user-name"></h1></td>
+                    </tr>
+                </table>
+                <!-- <table class="user-table">
+                    <tr>
+                        <td>
+                            <div class="user-div my-user-info">
+                                <h2 class="user-name">MOMO</h2>
+                                <div class="fight-box">
+                                    <div class="fight-div scissor">
+                                        가위!
+                                    </div>
+                                    <div class="fight-div rock">
+                                        바위!
+                                    </div>
+                                    <div class="fight-div paper">
+                                        보!
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="user-div">
+                                <h2 class="user-name enemy-user-info">MOMO</h2>
+                                <div class="fight-box">
+                                    <div class="fight-div scissor">
+                                        가위!
+                                    </div>
+                                    <div class="fight-div rock">
+                                        바위!
+                                    </div>
+                                    <div class="fight-div paper">
+                                        보!
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table> -->
+            </div>
+            <div class="chat-div">
+
+            </div>
+            <div class="chat-input-div">
+                <label for="chat">username : <input type="text" name="chat" value=""></label>
+            </div>
+        </div>
+    </div>
+    <div class="game-container main-container">
+      <canvas id="canvas" width="550" height="768"></canvas>
+    </div>
+
+</body>
+<script>
+    require('./res/js/index.js')
+</script>
+
+</html>

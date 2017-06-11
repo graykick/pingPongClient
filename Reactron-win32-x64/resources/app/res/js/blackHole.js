@@ -1,5 +1,3 @@
-const $ = require("jquery");
-
 class BlackHole {
     constructor(center, radius) {
         this.state = {
@@ -33,17 +31,10 @@ class BlackHole {
         if (this.state.isShow) {
             ctx.save();
             // ctx.drawImage(this.img, this.position.x - this.size, this.position.y - this.size, this.size * 2, this.size * 2)
-            // ctx.fillStyle = "green";
-            // ctx.arc(this.position.x, this.position.y, 20, 0, 2 * Math.PI);
-            // ctx.fill();
-            $("#blackHoleImg").css({
-                display: "block"
-            });
+            ctx.fillStyle = "green";
+            ctx.arc(this.position.x, this.position.y, 20, 0, 2 * Math.PI);
+            ctx.fill();
             ctx.restore();
-        } else {
-            $("#blackHoleImg").css({
-                display: "none"
-            });
         }
     }
 }

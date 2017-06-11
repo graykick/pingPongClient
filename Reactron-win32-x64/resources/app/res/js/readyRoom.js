@@ -6,28 +6,12 @@ let id;
 let selectedRPS;
 let RPSstate = 2;
 let roomId;
+let isEnter = false;
 
 const init = (userId, roomNum) => {
     id = userId;
     roomId = roomNum;
-
-    $(".my-user-info .fight-div").on("click", function() {
-        $(this).toggleClass("selected");
-        if (selectedRPS != undefined) {
-            selectedRPS.toggleClass("selected");
-            selectedRPS = $(this);
-        } else {
-            selectedRPS = $(this);
-        }
-
-        if ($(this).index() === 0) {
-            RPSstate = 2;
-        } else if ($(this).index() === 1) {
-            RPSstate = 0;
-        } else {
-            RPSstate = 5;
-        }
-    });
+    console.info("readyRoom inin!!!!!!!!!!!!!!!!!11  = " + id + ", " + roomId);
 };
 
 const getRoomInfo = (roomId) => {
@@ -45,8 +29,8 @@ const fillUserCard = () => {
 };
 
 const fillUser = (names) => {
-    for(let i = 0; i < names.length; i++) {
-        $(`.user-name:nth-child(${i})`).text(names[i]);
+    for (let i = 0; i < names.length; i++) {
+        $(`.user-name`).eq(i).text(names[i]);
     }
 };
 
@@ -75,34 +59,6 @@ const renderWinner = (data) => {
     }
 };
 
-const startCountDown = (data) => {
-    setTimeout(sendRPS, 10000);
-    $('.count').text(10)
-    $('.second-count').text(10)
-    let count = 8
-
-    let intervalID = null
-
-    let countDown = () => {
-        if (count >= 0) {
-            $('.count').addClass('enlarge')
-            $('.second-count').addClass('enlarge')
-            setTimeout(() => {
-                let currentCount = count--
-                    $('.count').removeClass('enlarge')
-                $('.second-count').removeClass('enlarge')
-                if (currentCount >= 0) {
-                    $('.count').text(currentCount)
-                    $('.second-count').text(currentCount)
-                }
-            }, 1700);
-        } else {
-            clearInterval(intervalID);
-        }
-    };
-
-    intervalId = setInterval(countDown, 1000);
-};
 
 const callbacks = {
     getRoomInfo: (res) => {
@@ -110,8 +66,8 @@ const callbacks = {
     },
     startGame: (res) => {
         if (res.status == "200") {
-            fillEnemyCard(res.enemy);
-            startCountDown();
+            // fillEnemyCard(res.enemy);
+            // startCountDown();
         }
     },
     setWinner: (res) => {
@@ -121,12 +77,24 @@ const callbacks = {
     },
     enterGame: (res) => {
         if (res.status == "200") {
+            console.info("enterGame !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ");
+
             $(".readyRoom-container").toggle("slide");
             $(".game-container").toggle("slide");
             inGame.setInfo(roomId, id);
+
+            let rotationDeg = res.direction * 90;
+            let mapSize = {
+                width: res.mapWidth,
+                height: res.mapHeight
+            }
+            let barSize = {
+                width: res.barWidth,
+                height: res.barHeight
+            }
+            inGame.init(mapSize, rotationDeg, barSize, res.blackHallRadius, res.ballRadius);
         }
     }
-
 };
 
 connection.addCallbacks(callbacks);
@@ -135,3 +103,4 @@ module.exports.init = init;
 module.exports.getRoomInfo = getRoomInfo;
 module.exports.fillUserCard = fillUserCard;
 module.exports.fillUser = fillUser;
+module.exports.isEnter = isEnter;

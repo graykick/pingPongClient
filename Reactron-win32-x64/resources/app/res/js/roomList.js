@@ -4,6 +4,25 @@ const readyRoom = require('./readyRoom.js');
 
 let id;
 let roomId;
+let getRoomListInterval;
+
+const getRoomList = () => {
+    let jsonSendData = {
+        type: "getRoomList"
+    }
+    connection.sendJson(jsonSendData);
+}
+
+const enterRoom = (no) => {
+    readyRoom.init(id, no);
+    console.info("enter room req" + id + ", " + no);
+    let jsonSendData = {
+        type: "enterRoom",
+        id: id,
+        "room_id": no
+    }
+    connection.sendJson(jsonSendData);
+}
 
 const init = (userId) => {
     console.log("create room1");
@@ -25,20 +44,17 @@ const init = (userId) => {
         console.log($(this).children("td").eq(0).text());
         roomId = Number($(this).children("td").eq(0).text());
 
-        let jsonSendData = {
-            type: "enterRoom",
-            "room_id": Number($(this).children("td").eq(0).text()),
-            id: id
-        }
-        connection.sendJson(jsonSendData);
-    });
-}
+        enterRoom(Number($(this).children("td").eq(0).text()));
 
-const getRoomList = () => {
-    let jsonSendData = {
-        type: "getRoomList"
-    }
-    connection.sendJson(jsonSendData);
+        // let jsonSendData = {
+        //     type: "enterRoom",
+        //     "room_id": Number($(this).children("td").eq(0).text()),
+        //     id: id
+        // }
+        // connection.sendJson(jsonSendData);
+    });
+
+    getRoomListInterval = setInterval(getRoomList, 3000);
 }
 
 const fillRooms = (data) => {
@@ -49,21 +65,24 @@ const fillRooms = (data) => {
     }
 }
 
-const enterRoom = (no) => {
-    readyRoom.init(id, no);
-    let jsonSendData = {
-        type: "enterRoom",
-        id: id,
-        "room_id": no
-    }
-    connection.sendJson(jsonSendData);
+const cleanRooms = () => {
+    $(".roomList-table").html(`<tr>
+        <th>방 번호</th>
+        <th>방 제목</th>
+        <th>개설자</th>
+    </tr>`);
 }
+
+
 
 const callbacks = {
     enterRoom: (res) => {
-        $(".room-container").toggle("slide");
-        $(".readyRoom-container").toggle("slide");
-
+        if (!readyRoom.isEnter) {
+            $(".room-container").toggle("slide");
+            $(".readyRoom-container").toggle("slide");
+            readyRoom.isEnter = true;
+        }
+        clearInterval(getRoomListInterval);
         if (res.status == "200" || res.status == "201") {
             // readyRoom.getRoomInfo(res["room_id"]);
             readyRoom.fillUser(res.userList);
@@ -76,6 +95,7 @@ const callbacks = {
     },
     getRoomList: (res) => {
         if (res.status == "200") {
+            cleanRooms();
             fillRooms(res.roomList);
         }
     }

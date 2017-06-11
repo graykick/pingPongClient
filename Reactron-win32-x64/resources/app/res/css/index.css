@@ -374,3 +374,7 @@ html, body {
   0%   { font-size: 60px; opacity:1; }
     100% { font-size: 240px; opacity:0; }
 }
+
+canvas {
+    border: 1px solid white;
+}

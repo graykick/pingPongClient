@@ -9,7 +9,7 @@ class Network {
             host: Config.ip
         }, (res) => {
             // console.log(res);
-            console.log("socket connected");
+            // console.log("socket connected");
         });
         this.connection.on('data', (res) => {
             console.log(res.toString());

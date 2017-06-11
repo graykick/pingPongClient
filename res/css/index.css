@@ -374,3 +374,25 @@ html, body {
   0%   { font-size: 60px; opacity:1; }
     100% { font-size: 240px; opacity:0; }
 }
+
+canvas {
+    border: 1px solid white;
+    position: relative;
+    /*margin: 0 auto;*/
+    height: 760px;
+    width: 760px;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+
+#blackHoleImg {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    display: none;
+    /*margin: 0 auto;*/
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}

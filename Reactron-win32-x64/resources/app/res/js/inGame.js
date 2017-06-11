@@ -1,8 +1,6 @@
 const $ = require("jquery");
 const connection = require('./network.js');
 const gameRender = require('./gameRender.js');
-const roomList = require('./roomList.js');
-
 
 
 let roomId;
@@ -10,14 +8,10 @@ let id;
 let game;
 let gameInterval;
 let inputInterval;
-let AIInterval;
-let AIName;
 let moveState = {
     left: false,
     right: false
 }
-
-let AImoveDirection = 0;
 
 let moveDirection = "";
 
@@ -57,50 +51,15 @@ function userInput() {
 
 function gameInfoUpdate() {
     if (gameDataBuffer.length > 0) {
-        const gameData = gameDataBuffer.shift();
-        game.gameObjectUpdate(gameData);
-        AIInfo(gameData);
+        game.gameObjectUpdate(gameDataBuffer.shift());
         game.render();
     }
     // window.requestAnimationFrame(gameInfoUpdate);
 }
 
-function AIInfo(gameDataBuffer) {
-    console.info("AIINFO !!!!!!!!!!!!!!!!!!!!!!!!");
-    console.info("Ball X = " + gameDataBuffer.Ball.x + ", " + gameDataBuffer.userList[1].barPositionX);
-    if (gameDataBuffer.Ball.x > gameDataBuffer.userList[1].barPositionX) {
-        AImoveDirection = 3;
-        console.info("AIINFO 11111 !!!!!!!!!!!!!!!!!!!!!!!!");
-
-    } else if (gameDataBuffer.Ball.x < gameDataBuffer.userList[1].barPositionX) {
-        console.info("AIINFO 22222 !!!!!!!!!!!!!!!!!!!!!!!!");
-        AImoveDirection = -3;
-    }
-
-}
-
-function sendAIInfo() {
-
-    let sendJson = {
-        "room_id": roomId,
-        id: AIName,
-        barMoving: AImoveDirection,
-        type: "setBarPosition"
-    };
-    connection.sendJson(sendJson);
-}
-
-const init = (mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius, isAI, AIId) => {
+const init = (mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius) => {
     console.info("inGmae init");
-    if (isAI) {
-        console.info("in AI !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
-
-        AIName = AIId;
-        game = new gameRender.AIGame("canvas", mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius);
-        AIInterval = setInterval(sendAIInfo, 10);
-    } else {
-        game = new gameRender.Game("canvas", mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius);
-    }
+    game = new gameRender.Game("canvas", mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius);
 
     let newCallbacks = {
         sendGameInfo: (res) => {
@@ -143,7 +102,7 @@ const init = (mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius, isAI, AI
     console.info($(".game-container"));
 
     // window.requestAnimationFrame(gameInfoUpdate);
-    gameInterval = setInterval(gameInfoUpdate, 29);
+    gameInterval = setInterval(gameInfoUpdate, 30);
     inputInterval = setInterval(userInput, 10);
 }
 
@@ -155,17 +114,20 @@ const getGameInfo = () => {
     connection.sendJson(sendJson);
 };
 
-const callbacks = {
-    endGame: (res) => {
-        alert("Loser : " + res.loser);
-        $(".room-container").toggle("slide");
-
-        $(".game-container").toggle("slide");
-        roomList.setGetRoomListInterval();
-    }
-};
-
-connection.addCallbacks(callbacks);
+// const callbacks = {
+//     getGameInfo: (res) => {
+//         if (res.status == "200") {
+//             let rotationDeg = res.userPosition * 90;
+//             init(res.mapSize, rotationDeg);
+//         }
+//     },
+//     sendGameInfo: (res) => {
+//         console.log("sendGameInfo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//
+//     }
+// };
+//
+// connection.addCallbacks(callbacks);
 
 module.exports.init = init;
 module.exports.setInfo = setInfo;

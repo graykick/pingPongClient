@@ -7,6 +7,7 @@ const mainWindow = require('electron').remote.getCurrentWindow();
 const roomList = require('./roomList.js');
 
 let id;
+let count = 0;
 
 const callbacks = {
     login: (res) => {
@@ -25,6 +26,11 @@ const callbacks = {
             $(".login-form").toggle("slide");
             $(".register-form").toggle("slide");
         }
+    },
+    test: (res) => {
+        console.log(count + ". " + res);
+        count++;
+        console.info(count);
     }
 };
 

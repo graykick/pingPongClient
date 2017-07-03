@@ -26,42 +26,11 @@ const getRoomInfo = (roomId) => {
     connection.sendJson(jsonSendData);
 };
 
-const fillUserCard = () => {
-    $(".user-name").eq(0).text(id);
-    $(".user-div").eq(1).hide();
-};
-
 const fillUser = (names) => {
     for (let i = 0; i < names.length; i++) {
         $(`.user-name`).eq(i).text(names[i]);
     }
 };
-
-const fillEnemyCard = (data) => {
-    console.log("enemy card");
-    $(".user-div").eq(1).show();
-    $(".user-name").eq(1).text(data);
-};
-
-const sendRPS = () => {
-    let sendJson = {
-        type: "startRPS",
-        "room_id": roomId,
-        id: id,
-        RPS: RPSstate
-    };
-    console.log(sendJson);
-    connection.sendJson(sendJson);
-};
-
-const renderWinner = (data) => {
-    if (data) {
-        $(".my-user-info").after('<h1>선공</h1>');
-    } else {
-        $(".enemy-user-info").after('<h1>선공</h1>');
-    }
-};
-
 
 const callbacks = {
     getRoomInfo: (res) => {
@@ -85,7 +54,17 @@ const callbacks = {
             $(".game-container").toggle("slide");
             inGame.setInfo(roomId, id);
 
-            let rotationDeg = res.direction * 90;
+            let rotationDeg;
+            if (res.direction == 0) {
+                rotationDeg = 180;
+            } else if (res.direction == 1) {
+                rotationDeg = 90;
+            } else if (res.direction == 2) {
+                rotationDeg = 0;
+            } else if (res.direction == 3) {
+                rotationDeg = -90;
+            }
+
             let mapSize = {
                 width: res.mapWidth,
                 height: res.mapHeight
@@ -103,6 +82,5 @@ connection.addCallbacks(callbacks);
 
 module.exports.init = init;
 module.exports.getRoomInfo = getRoomInfo;
-module.exports.fillUserCard = fillUserCard;
 module.exports.fillUser = fillUser;
 module.exports.isEnter = isEnter;

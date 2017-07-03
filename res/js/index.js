@@ -9,6 +9,9 @@ const roomList = require('./roomList.js');
 let id;
 let count = 0;
 
+$(".login-container").toggle("slide");
+$(".room-container").toggle("slide");
+
 const callbacks = {
     login: (res) => {
         console.log(res);

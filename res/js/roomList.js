@@ -111,8 +111,6 @@ const quickGameFind = (data) => {
     }
 }
 
-
-
 const callbacks = {
     enterRoom: (res) => {
         if (!readyRoom.isEnter) {

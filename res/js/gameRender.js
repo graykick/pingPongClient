@@ -29,7 +29,7 @@ class Game {
         // this.calculScale();
 
         this.userRotationDeg = userRotationDeg;
-        // this.setRotation();
+        this.setRotation();
 
         this.ball = new Ball();
         this.players = [];
@@ -82,7 +82,7 @@ class Game {
 
     setRotation() {
         $(this.canvas).css({
-            transform: `rotate(${this.userRotationDeg}deg)`
+            transform: `translateY(-50%) translateX(-50%) rotate(${this.userRotationDeg}deg) `
         })
     }
 
@@ -133,7 +133,7 @@ class AIGame {
         // this.calculScale();
 
         this.userRotationDeg = userRotationDeg;
-        // this.setRotation();
+        this.setRotation();
 
         this.ball = new Ball();
         this.players = [];
@@ -176,7 +176,13 @@ class AIGame {
 
     setRotation() {
         $(this.canvas).css({
-            transform: `rotate(${this.userRotationDeg}deg)`
+            // border: "1px solid white",
+            // position: "relative",
+            // height: "760px",
+            // width: "760px",
+            // top: "50%",
+            // left: "50%",
+            transform: `translateY(-50%) translateX(-50%) rotate(${this.userRotationDeg}deg)`
         })
     }
 

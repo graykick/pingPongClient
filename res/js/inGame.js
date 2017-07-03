@@ -58,6 +58,7 @@ function userInput() {
 function gameInfoUpdate() {
     if (gameDataBuffer.length > 0) {
         const gameData = gameDataBuffer.shift();
+        console.warn(gameDataBuffer.length);
         game.gameObjectUpdate(gameData);
         AIInfo(gameData);
         game.render();
@@ -97,7 +98,7 @@ const init = (mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius, isAI, AI
 
         AIName = AIId;
         game = new gameRender.AIGame("canvas", mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius);
-        AIInterval = setInterval(sendAIInfo, 10);
+        AIInterval = setInterval(sendAIInfo, 30);
     } else {
         game = new gameRender.Game("canvas", mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius);
     }
@@ -144,7 +145,7 @@ const init = (mapSize, rotateDeg, barSize, blackHoleRadius, ballRadius, isAI, AI
 
     // window.requestAnimationFrame(gameInfoUpdate);
     gameInterval = setInterval(gameInfoUpdate, 29);
-    inputInterval = setInterval(userInput, 10);
+    inputInterval = setInterval(userInput, 30);
 }
 
 const getGameInfo = () => {
@@ -159,7 +160,6 @@ const callbacks = {
     endGame: (res) => {
         alert("Loser : " + res.loser);
         $(".room-container").toggle("slide");
-
         $(".game-container").toggle("slide");
         roomList.setGetRoomListInterval();
     }
